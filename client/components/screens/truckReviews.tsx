@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { StyleSheet, View, Text, Button } from 'react-native';
-import TruckPostItem from '../dropIns/TruckPostItem';
+import TruckReviewItem from '../dropIns/TruckReviewItem';
 import InfoWindow from '../dropIns/InfoWindow';
 
 export default function TruckReviews({ navigation }) {
@@ -26,7 +26,6 @@ export default function TruckReviews({ navigation }) {
   }, []);
 
   useEffect(() => {
-    let truckReviewers = [];
     const getTruckReviewers = async () => {
       currentTruckReviews
         .map((review: object) => review.id_user)
@@ -34,13 +33,14 @@ export default function TruckReviews({ navigation }) {
           axios
             .get(`${process.env.EXPO_LocalLan}/user/${reviewerId}`)
             .then((response) => {
-              truckReviewers.push(response.data);
+              if (response.data) {
+                setCurrentTruckReviewers(response.data);
+              }
             })
             .catch((err) => {
               console.error(err);
             });
         });
-      setCurrentTruckReviewers(truckReviewers);
     };
     getTruckReviewers();
   }, [currentTruckReviews]);
@@ -69,13 +69,12 @@ export default function TruckReviews({ navigation }) {
         />
       </View>
       <View style={styles.reviews}>
-        {currentTruckReviews.map((post) => (
-          <TruckPostItem
+        {currentTruckReviews.map((review) => (
+          <TruckReviewItem
             currentTruck={currentTruck}
             currentTruckReviewers={currentTruckReviewers}
-            post={post}
-            key={post.id}
-            onReviews={onReviews}
+            review={review}
+            key={review.id}
           />
         ))}
       </View>

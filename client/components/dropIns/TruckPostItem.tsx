@@ -6,7 +6,11 @@ const TruckPostItem = ({ post }) => (
   <View key={post.id} style={styles.container}>
     <Text style={styles.title}>{post.title}</Text>
     <Text>{post.message}</Text>
-    <Image source={{ uri: post.photo }} style={styles.image} resizeMode="contain" />
+    <Image
+      source={{ uri: post.photo }}
+      style={styles.image}
+      resizeMode="contain"
+    />
     <Divider style={{ backgroundColor: 'blue' }} />
   </View>
 );
